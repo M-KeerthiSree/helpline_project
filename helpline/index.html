@@ -62,43 +62,175 @@
 <button id="panicBtn" onclick="activatePanic()">🔴 PANIC</button>
 <button id="panicBtn">PANIC</button>
 <a id="panicSMS" style="display:none;"></a>
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>National Smart Emergency System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>🚨 National Smart Emergency System</h1>
+</header>
+
+<!-- Search / Voice Section -->
+<section class="search-section">
+    <input type="text" id="searchInput" placeholder="Type or Speak (Police / Ambulance / Fire)">
+    <button onclick="detectEmergency()">Search</button>
+    <button onclick="startVoice()">🎤 Voice</button>
+</section>
+
+<!-- Countdown / Call Result -->
+<section id="result"></section>
+
+<!-- Critical Emergency Buttons -->
+<section class="critical-calls">
+    <h2>Critical Emergency</h2>
+    <div id="criticalButtons"></div>
+</section>
+
+<!-- All India Helplines -->
+<section class="contacts">
+    <h2>All India Helplines</h2>
+    <div id="nationalHelplines"></div>
+</section>
+
+<!-- Nearest Police / Hospital -->
+<section class="nearest">
+    <button onclick="openNearest('police')">Nearest Police</button>
+    <button onclick="openNearest('hospital')">Nearest Hospital</button>
+</section>
+
+<!-- Safety Tips -->
+<section class="tips">
+    <h2>Safety Tips</h2>
+    <ul>
+        <li>Keep your phone charged and ready.</li>
+        <li>Know the nearest hospital and police station.</li>
+        <li>In case of fire, stay low and evacuate calmly.</li>
+        <li>For missing child, call 1098 immediately.</li>
+        <li>In any emergency, call 112 first if unsure.</li>
+    </ul>
+</section>
+
+<!-- PANIC BUTTON (ONLY ONE) -->
+<button id="panicBtn">🔴 PANIC</button>
+
+<!-- External JS Files (Kept Same) -->
+<script src="js/data.js"></script>
+<script src="js/location.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Panic Script -->
+<!-- <script>
 document.getElementById("panicBtn").addEventListener("click", function() {
 
-    alert("Emergency will start in 3 seconds!");
+    alert("Emergency will start in 1 seconds!");
 
     setTimeout(function() {
 
-        // Call 112
-        window.location.href = "tel:112";
-
         if (navigator.geolocation) {
+
             navigator.geolocation.getCurrentPosition(function(position) {
 
                 let lat = position.coords.latitude;
                 let lon = position.coords.longitude;
 
-                let message = "I am in danger. My location: https://maps.google.com/?q="
-                    + lat + "," + lon;
+                let message = "🚨 I am in danger! My location: https://maps.google.com/?q="
+                              + lat + "," + lon;
 
-                let phoneNumber = "9876543210";
+                let phoneNumber = "112"; // Change this num
+                let smsLink = "sms:" + phoneNumber + "?body="
+                              + encodeURIComponent(message);
 
-                let smsLink = "sms:" + phoneNumber + "?body=" + encodeURIComponent(message);
+                // STEP 1: Open SMS panel
+                window.location.href = smsLink;
 
+                // STEP 2: After 6 seconds, initiate call
                 setTimeout(function() {
-                    window.location.href = smsLink;
-                }, 2000);
+                    window.location.href = "tel:112";
+                }, 3000);
 
             }, function() {
-                alert("Unable to get location!");
+                alert("Location permission denied!");
             });
+
         } else {
             alert("Geolocation not supported!");
         }
 
-    }, 3000);
+    }, 1000);
+
+});
+</script> -->
+<script>
+document.getElementById("panicBtn").addEventListener("click", function() {
+
+    alert("Emergency will start in 1 seconds!");
+
+    setTimeout(function() {
+
+        // Check if geolocation supported
+        if (!navigator.geolocation) {
+            // Direct call if not supported
+            window.location.href = "tel:112";
+            return;
+        }
+
+        let locationTimeout = setTimeout(function(){
+            // If location takes too long (5 sec), call directly
+            window.location.href = "tel:112";
+        }, 5000);
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+                clearTimeout(locationTimeout);
+
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+
+                let message = "🚨 I am in danger! My location: https://maps.google.com/?q="
+                              + lat + "," + lon;
+
+                let phoneNumber = "112"; // Change this
+
+                let smsLink = "sms:" + phoneNumber + "?body="
+                              + encodeURIComponent(message);
+
+                // STEP 1: Open SMS
+                window.location.href = smsLink;
+
+                // STEP 2: After 6 sec → Call
+                setTimeout(function(){
+                    window.location.href = "tel:112";
+                }, 6000);
+            },
+
+            function(error) {
+                // If permission denied or error → Call directly
+                window.location.href = "tel:112";
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            }
+        );
+
+    },1000);
+
 });
 </script>
 </body>
 </html>
+</body>
+</html>
+
 
