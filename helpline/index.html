@@ -69,30 +69,36 @@ document.getElementById("panicBtn").addEventListener("click", function() {
 
     setTimeout(function() {
 
-        // 1️⃣ Call 112
+        // Call 112
         window.location.href = "tel:112";
 
-        // 2️⃣ Get location and open SMS
-        navigator.geolocation.getCurrentPosition(function(position) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
 
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
 
-            let message = "I am in danger. My location: https://maps.google.com/?q="
-                + lat + "," + lon;
+                let message = "I am in danger. My location: https://maps.google.com/?q="
+                    + lat + "," + lon;
 
-            let phoneNumber = "9876543210"; // trusted person number
+                let phoneNumber = "9876543210";
 
-            let smsLink = "sms:" + phoneNumber + "?body=" + encodeURIComponent(message);
+                let smsLink = "sms:" + phoneNumber + "?body=" + encodeURIComponent(message);
 
-            setTimeout(function() {
-                window.location.href = smsLink;
-            }, 2000);
+                setTimeout(function() {
+                    window.location.href = smsLink;
+                }, 2000);
 
-        });
+            }, function() {
+                alert("Unable to get location!");
+            });
+        } else {
+            alert("Geolocation not supported!");
+        }
 
     }, 3000);
 });
 </script>
 </body>
 </html>
+
