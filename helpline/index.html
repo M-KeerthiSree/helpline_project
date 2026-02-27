@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>National Smart Emergency System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>🚨 National Smart Emergency System</h1>
+</header>
+
+<!-- ---------------- Search / Voice Section ---------------- -->
+<section class="search-section">
+    <input type="text" id="searchInput" placeholder="Type or Speak (Police / Ambulance / Fire)">
+    <button onclick="detectEmergency()">Search</button>
+    <button onclick="startVoice()">🎤 Voice</button>
+</section>
+
+<!-- ---------------- Countdown / Call Result ---------------- -->
+<section id="result"></section>
+
+<!-- ---------------- Critical Emergency Buttons ---------------- -->
+<section class="critical-calls">
+    <h2>Critical Emergency</h2>
+    <div id="criticalButtons"></div>
+</section>
+
+<!-- ---------------- All India Helplines ---------------- -->
+<section class="contacts">
+    <h2>All India Helplines</h2>
+    <div id="nationalHelplines"></div>
+</section>
+
+<!-- ---------------- Nearest Police / Hospital ---------------- -->
+<section class="nearest">
+    <button onclick="openNearest('police')">Nearest Police</button>
+    <button onclick="openNearest('hospital')">Nearest Hospital</button>
+</section>
+
+<!-- ---------------- Safety Tips ---------------- -->
+<section class="tips">
+    <h2>Safety Tips</h2>
+    <ul>
+        <li>Keep your phone charged and ready.</li>
+        <li>Know the nearest hospital and police station.</li>
+        <li>In case of fire, stay low and evacuate calmly.</li>
+        <li>For missing child, call 1098 immediately.</li>
+        <li>In any emergency, call 112 first if unsure.</li>
+    </ul>
+</section>
+
+<!-- ---------------- JS Files ---------------- -->
+<script src="js/data.js"></script>
+<script src="js/location.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/app.js"></script>
+
+<button id="panicBtn" onclick="activatePanic()">🔴 PANIC</button>
+</body>
+</html>
